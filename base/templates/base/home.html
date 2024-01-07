@@ -1,0 +1,15 @@
+{% extends "Layout.html" %}
+
+{% block content %}
+{% comment %} <h1>Home TEMPLATE {{ rooms }} </h1> {% endcomment %}
+<h1>Home TEMPLATE </h1>
+<div>
+    {% for room in rooms%}
+        <a href="/room/{{room.id}}">{{room.name}} with {{room.id}}</a>
+    {% endfor %}
+</div>
+{% endblock %}
+
+
+
+
