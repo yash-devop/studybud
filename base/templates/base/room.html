@@ -1,4 +1,56 @@
 {% extends "Layout.html" %}
 {% block content %}
-<h1>Room TEMPLATE {{room.name}}</h1>
+
+<style>
+    .room-container{
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+    }
+    .participants{
+        width: 800px;
+    }
+    .chat{
+        width: 400px;
+    }
+</style>
+
+<div class="room-container">
+    <div class="chat">
+        <h1>{{ room.name }}</h1>
+        <p>{{ room.description }}</p>
+    
+        <div class="comment-wrapper">
+            <h3>Conversion</h3>
+            <hr>
+            {% for message in room_messages%}
+                <div class="">
+                    <small>@{{message.user}} {{message.created|timesince}} ago</small>
+                    <p>{{message.body}}</p>
+                </div>
+            {% endfor %}
+        </div>
+        
+        {% if request.user.is_authenticated %}
+        <div>
+            <form action="" method="POST">
+                {% csrf_token %}
+                <input type="text" name="body" placeholder="Write you message here...">
+            </form>
+        </div>
+        {% endif %}
+    </div>
+    
+    <div class="participants">
+        <h3>Participants</h3>
+        <hr>
+        {% for user in participants%}
+            <div>
+                <p>{{user.username}}</p>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+
 {% endblock %}

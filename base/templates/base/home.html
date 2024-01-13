@@ -1,12 +1,53 @@
 {% extends "Layout.html" %}
 
 {% block content %}
+<style>
+    .home{
+        display:flex;
+        gap:15px;
+    }
+    .rooms{
+        display: flex;
+        flex-direction: column;
+    }
+    .topic_container{
+        display: flex;
+        flex-direction : column;
+    }
+</style>
 {% comment %} <h1>Home TEMPLATE {{ rooms }} </h1> {% endcomment %}
 <h1>Home TEMPLATE </h1>
-<div>
-    {% for room in rooms%}
-        <a href="/room/{{room.id}}">{{room.name}} with {{room.id}}</a>
-    {% endfor %}
+<a href={% url "create-room" %}>Create Room</a>
+<div class="home">
+    <p>{{rooms.count}} rooms available</p>
+    <div class="browse_topic">
+        <h3>Browse Topics</h3>
+        <div>
+            <a href="{% url "home" %}">All</a>
+        </div>
+        <div class="topic_container">
+            {% for topic in topics %}
+                <a href="{% url "home" %}?q={{topic.name}}"">{{topic.name}}</a>
+            {% endfor %}
+        </div>
+        <hr>
+    </div>
+    <div class="rooms">
+        {% for room in rooms%}
+            <div>
+                {% if request.user == room.host %}
+                <a href={% url "update-room" room.id %}>edit</a>
+                <a href={% url "delete-room" room.id %}>delete</a>
+                {% comment %} {% else%} {% endcomment %}
+                {% comment %} <p>EMPTY</p> {% endcomment %}
+                {% endif %}
+                <span>@{{room.host.username}}</span>
+                <a href="/room/{{room.id}}">{{room.name}} with {{room.id}}</a>
+                <p>{{room.description}}</p>
+                <p>{{room.topic.name}}
+            </div>
+        {% endfor %}
+    </div>
 </div>
 {% endblock %}
 
